@@ -1,0 +1,38 @@
+{
+  "name": "category-theory-summarizer",
+  "version": "1.0.0",
+  "display_name": "范畴论取向的文本总结器",
+  "owner": "user",
+  "updated_at": "2026-10-11",
+  "status": "active",
+  "maturity_tier": "production",
+  "lifecycle_stage": "active",
+  "context_budget_tier": "production",
+  "review_cadence": "on-change",
+  "category": "analysis",
+  "complexity_tier": "complex",
+  "target_platforms": [
+    "openai",
+    "claude",
+    "generic"
+  ],
+  "factory_components": [
+    "references",
+    "scripts",
+    "evals",
+    "reports"
+  ],
+  "supported_input_formats": [
+    ".pdf",
+    ".docx",
+    ".txt",
+    ".md",
+    ".markdown"
+  ],
+  "known_gaps": [
+    "门禁不做跨轮一致性检查",
+    "路由留出集仅做关键词覆盖检查并已自动化，语义排除仍为人工判定（yao-meta-skill 本机安装缺少 scripts/）",
+    "扫描件 PDF 需 OCR，当前为阻断项",
+    "显式/重构标注的正确性无自动检查，仅检查出现次数"
+  ]
+}

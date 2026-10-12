@@ -1,0 +1,74 @@
+interface:
+  display_name: "范畴论取向的文本总结器"
+  short_description: "Category-theoretic structural summarizer for document batches"
+  default_prompt: "Use $category-theory-summarizer to convert my materials (PDF/DOCX/PPTX/XLSX/TXT/Markdown) to Markdown with MarkItDown, archive sources and conversions separately, then produce a reviewable category-theoretic skeleton report: object table, morphism table, each commutative diagram paired with a plain-domain translation diagram, categorical restatement, and a plain-language summary, iterate three more times with round stamps only, and archive everything into a timestamped run directory."
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+  activation:
+    mode: "manual"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+    env:
+      python: "venv: C:/Users/14545/.workbuddy/binaries/python/envs/default"
+      dependencies:
+        - "markitdown[pdf,docx,pptx,xlsx]"
+        - "pypdf"
+        - "python-docx"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow-metadata-only"
+  degradation:
+    openai: "metadata-adapter"
+    claude: "neutral-source-plus-adapter"
+    generic: "neutral-source"
+io_contract:
+  input:
+    materials_dir: "materials/"
+    accepted_extensions:
+      - ".pdf"
+      - ".docx"
+      - ".pptx"
+      - ".xlsx"
+      - ".html"
+      - ".txt"
+      - ".md"
+      - ".markdown"
+    optional_model_prompt: "ModelPrompt.md"
+    optional_rounds: 3
+  output:
+    archive_root: "runs/"
+    run_dir: "runs/<YYYYMMDD-HHMMSS>/"
+    run_layout:
+      "00_source/": "源文件副本，只复制不改动"
+      "01_markdown/": "MarkItDown 统一后的 .md，后续唯一输入"
+      "02_reports/": "R1.md..R4.md + 00_INDEX.md（只带轮次戳，不带每轮时间戳）"
+      "manifest_conversion.json": "逐文件转换台账"
+    required_files:
+      - "00_source/"
+      - "01_markdown/"
+      - "02_reports/00_INDEX.md"
+      - "02_reports/R1.md"
+      - "02_reports/R2.md"
+      - "02_reports/R3.md"
+      - "02_reports/R4.md"
+      - "manifest_conversion.json"
+  diagram_rules:
+    - "原图节点名取自对象表、箭头名取自态射表，不得自造"
+    - "每张原图后必须追加通俗化翻译图，换成本领域的说法"
+gates:
+  - name: "convert"
+    command: "scripts/convert_markdown.py --input materials --archive runs"
+    pass_exit_code: 0
+  - name: "extract"
+    command: "scripts/extract_text.py --input <RUN_DIR>/01_markdown --out <RUN_DIR>/03_text"
+    pass_exit_code: 0
+  - name: "report-gate"
+    command: "scripts/check_reports.py --run-dir <RUN_DIR> --rounds 4"
+    pass_exit_code: 0

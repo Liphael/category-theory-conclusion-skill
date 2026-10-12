@@ -1,0 +1,55 @@
+interface:
+  display_name: "范畴论取向的文本总结器"
+  short_description: "Category-theoretic structural summarizer for document batches"
+  default_prompt: "Use $category-theory-summarizer to turn my materials (PDF/DOCX/TXT/Markdown) into a reviewable category-theoretic skeleton report: object table, morphism table, commutative diagram, categorical restatement, and a plain-language summary, then iterate three more times with real timestamps."
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+  activation:
+    mode: "manual"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+    env:
+      python: "venv: C:/Users/14545/.workbuddy/binaries/python/envs/default"
+      dependencies:
+        - "pypdf"
+        - "python-docx"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow-metadata-only"
+  degradation:
+    openai: "metadata-adapter"
+    claude: "neutral-source-plus-adapter"
+    generic: "neutral-source"
+io_contract:
+  input:
+    materials_dir: "materials/"
+    accepted_extensions:
+      - ".pdf"
+      - ".docx"
+      - ".txt"
+      - ".md"
+      - ".markdown"
+    optional_model_prompt: "ModelPrompt.md"
+    optional_rounds: 3
+  output:
+    reports_dir: "reports/"
+    required_files:
+      - "00_INDEX.md"
+      - "R1_<YYYYMMDD-HHMMSS>.md"
+      - "R2_<YYYYMMDD-HHMMSS>.md"
+      - "R3_<YYYYMMDD-HHMMSS>.md"
+      - "R4_<YYYYMMDD-HHMMSS>.md"
+gates:
+  - name: "extract"
+    command: "scripts/extract_text.py --input materials --out .workbuddy/tmp_text"
+    pass_exit_code: 0
+  - name: "report-gate"
+    command: "scripts/check_reports.py --reports reports --rounds 4"
+    pass_exit_code: 0

@@ -1,0 +1,55 @@
+{
+  "name": "category-theory-summarizer",
+  "version": "2.0.1",
+  "display_name": "范畴论取向的文本总结器",
+  "owner": "user",
+  "updated_at": "2026-10-12",
+  "status": "active",
+  "maturity_tier": "production",
+  "lifecycle_stage": "active",
+  "context_budget_tier": "production",
+  "review_cadence": "on-change",
+  "category": "analysis",
+  "complexity_tier": "complex",
+  "target_platforms": [
+    "openai",
+    "claude",
+    "generic"
+  ],
+  "factory_components": [
+    "references",
+    "scripts",
+    "evals",
+    "reports"
+  ],
+  "supported_input_formats": [
+    ".pdf",
+    ".docx",
+    ".pptx",
+    ".xlsx",
+    ".html",
+    ".txt",
+    ".md",
+    ".markdown"
+  ],
+  "v2_changes": [
+    "MarkItDown 统一转 .md，源文件与转换产物分别归档到 00_source/ 与 01_markdown/",
+    "Mermaid 原图节点命名必须以对象表/态射表为准",
+    "每张范畴论原图后必须追加通俗化翻译图",
+    "轮次戳取代每轮时间戳，本次全部输出归入以时间戳命名的运行目录"
+  ],
+  "v201_fixes": [
+    "修复假阴性：图的存在曾靠正文关键词判定，导致全篇无 Mermaid 图的报告被判通过；现改为只认 Mermaid 代码块，且按子标题判定原图/翻译图类型并要求交替出现",
+    "节点比对收窄到骨架表第一列（第二列中文名不参与），避免翻译图使用中文名被误判为未翻译",
+    "新增两个反向用例 tricky__translation_is_copy 与 tricky__prose_only_diagram，自测组数由 7 组增至 9 组",
+    "新增 _probe_diagrams.py 八条对抗性探测（含三条期望 EXIT=0 的不得误杀用例），把原先只写在文档里的攻击思路固化为可复跑脚本"
+  ],
+  "known_gaps": [
+    "门禁不做跨轮一致性检查",
+    "翻译图只判「确实换了词」，不判「换得准」",
+    "转换环节查不出「转出来了但少了一段」，需人工抽样比对源文件与 .md",
+    "路由留出集仅做关键词覆盖检查并已自动化，语义排除仍为人工判定（yao-meta-skill 本机安装缺少 scripts/）",
+    "扫描件 PDF 需 OCR，当前为阻断项",
+    "显式/重构标注的正确性无自动检查，仅检查出现次数"
+  ]
+}
