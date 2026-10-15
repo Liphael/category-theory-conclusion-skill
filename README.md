@@ -1,6 +1,8 @@
-# CTCP: Category Theory Conclusion Prompt
+# CTSS: Category Theory Summarizer Skill
 
-给定单一范畴论骨架的材料总结提示词
+**
+给定单一范畴论骨架的材料总结提示词，当前以agent转为skill迭代至0.2.2版本（见"ai example"文件夹），在人工参考修改中，正式release版完成时将重新发布。
+**
 
 注：本示例为IVM/MVI双向循环认知假设中Model部分自上而下的简单实验用例，本意是为了基于材料生成一个无问题导向的图，并在下一步Value模块中基于后续问题材料用于生成skill类。
 把范畴论想成“逻辑系统的逻辑”：逻辑里最核心的是“从前提推出结论”，范畴论则把这种“推出”变成箭头来研究。

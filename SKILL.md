@@ -1,8 +1,8 @@
 ---
-name: category-theory-conclusion-skill
+name: category-theory-summarizer-skill
 description: Identify all textual materials provided in materials, and convert them into a categorical framework summary, generating a 'objects-morphisms' directed graph. Output three rounds of timestamped reports to the specified location, enabling the IVM/MVI Value module to generate skill classes.
-version: 1.0.0
-domain: category-theory, logic, IVM/MVI, text-summarization
+version: 0.2.0
+domain: category-theory, logic, IVM/MVI, markdown-text-summarization
 inputs:
   - materials/
 outputs:
@@ -11,36 +11,29 @@ iterations: 3
 timestamp_format: YYYYMMDDTHHMMSSZ
 ---
 
-# SKILL: CTCS — Category Theory Conclusion Skill
+# CTSS / Category Theory Summarizer Skill / 范畴论结构化总结器
 
-## 0. 技能定位
+## 0. 使用接受域/使用拒绝域
 
-CTCS 是 IVM/MVI 双向循环认知假设中 **Model 模块**的自上而下简单实验用例。  
-它把任意材料转化为一个 **无问题导向** 的范畴论骨架总结：不先问“要解决什么问题”，只先问“材料中出现了哪些对象、态射、复合、函子、自然变换、极限/余极限、伴随、单子、Yoneda 结构”。
+**接受域**：
 
-其产物写入 `reports/`，并作为下一步 **Value 模块**的输入：Value 模块再基于后续问题材料，把这些无问题导向图激活、裁剪、组合为 skill 类。
+- 用户要求执行 CTSS、Category Theory Summarizer Skill
+- 用户要求为 IVM/MVI 的 Value 模块准备 skill 类输入
+- 用户提供一批统一的材料（.md），要求做**范畴论总结**
+- 用户要求输出**对象表** / **态射表** / **范畴图** / **范畴论重述**
 
-范畴论在这里的通俗逻辑学解释是：
+**拒绝域**：
 
-> 把“证明”当作箭头，把“逻辑系统”当作箭头组成的网，然后研究这些网如何翻译、比较、构造、配对、包装，以及如何由关系决定对象。
+- 在没有材料的情况下要求执行 CTSS → 拒绝使用
+- 用户明确要求普通摘要、仅提取要点 → 拒绝使用
+- 用户要求进行翻译、润色任务 → 拒绝使用
+- 用户要求进行数学证明 / 定理推导 → 拒绝使用
 
----
+## 1. 输入 / 输出规则
 
-## 1. 触发条件
+**输入**
 
-当满足以下任一条件时启用本技能：
-
-- 用户提供 `materials/` 文件夹，并要求做范畴论总结；
-- 用户要求执行 CTCS、Category Theory Conclusion Skill；
-- 用户要求从文本生成无问题导向的范畴论骨架图；
-- 用户要求为 IVM/MVI 的 Value 模块准备 skill 类输入；
-- 用户要求把文本、规范、实验记录、哲学段落或数学材料重述为对象表、态射表和交换图。
-
----
-
-## 2. 输入
-
-### 2.1 必需输入
+### 1.1 必需输入
 
 - `materials/` 文件夹中的材料，可包含：
   - `.md`
@@ -49,7 +42,7 @@ CTCS 是 IVM/MVI 双向循环认知假设中 **Model 模块**的自上而下简�
   - `.pdf` 抽取文本
   - 代码、规范、实验记录、对话记录、自然语言笔记
 
-### 2.2 可选输入
+### 1.2 可选输入
 
 - 语言偏好；
 - 形式化容忍度：严格 / 宽松；
@@ -57,40 +50,34 @@ CTCS 是 IVM/MVI 双向循环认知假设中 **Model 模块**的自上而下简�
 - 是否输出 Mermaid 图；
 - 指定范畴层级：单范畴 / 2-范畴 / 富范畴 / 拓扑斯等。
 
-### 2.3 Model 阶段不使用的输入
+| 项 | 说明 |
+| --- | --- |
+| 材料目录 | `.md` `.markdown` `.txt` 直接使用，若无则拒绝使用，尝试检索其他格式文件并转换 |
+| 模型提示文件（可选） | 如 `prompts/rawmodel.md`，给出自定义步骤；缺省用内置五步模型 |
+| 迭代轮数（可选） | 进行 `N` 次迭代（即 1 基线 + N 轮 = N+1 份报告）, `N` 值默认为 3 |
 
-- 后续问题材料；
-- 目标导向、任务导向、价值导向的选择标准。
+**输出**（本次运行的**全部**产物归入一个以时间戳命名的运行目录）
 
-这些应留给 Value 模块。
-
----
-
-## 3. 输出
-
-所有输出写入 `reports/`。
-
-每轮迭代生成一个独立报告，命名建议：
-
-```text
-reports/CTCS_<timestamp>_iter1.md
-reports/CTCS_<timestamp>_iter2.md
-reports/CTCS_<timestamp>_iter3.md
 ```
-
-时间戳格式：
-
-```text
-YYYYMMDDTHHMMSSZ
+runs/
+  20261012-142200/                  # 运行目录，目录名即本次运行时间戳
+    00_source/                      # .md源文件副本，只复制不改动
+    01_report/
+      00_INDEX.md                   # 索引 + 收敛结论速览（必产）
+      R0.md                         # 基线轮（轮次戳，不带时间戳）
+      R1.md                         # 迭代 1/3
+      R2.md                         # 迭代 2/3
+      R3.md                         # 迭代 3/3（收敛版，需可独立阅读）
+    manifest_conversion.json        # 逐文件转换台账
 ```
 
 每轮报告必须包含：
 
 1. 文本类型与形式化程度；
-2. 对象表；
-3. 态射表；
-4. 文字交换图或 Mermaid 图；
-5. 范畴论重述 3—5 句；
+2. 范畴论骨架（基范畴表、函子表、对象表、态射表、其他结构）
+4. 基于 Mermaid 书写的范畴结构图；
+5. 范畴结构图
+6. 范畴论重述 3—5 句；
 6. 非范畴论通俗摘要；
 7. 显式结构 vs 合理重构；
 8. 信息缺失对象表；
@@ -98,7 +85,20 @@ YYYYMMDDTHHMMSSZ
 
 ---
 
-## 4. 核心流程
+## 2. 执行流程
+
+```
+步骤 0  检测并统一转 .md 并双归档   scripts/convert_markdown.py   ← MarkItDown
+步骤 1  文本提取与空内容校验   scripts/extract_text.py       ← 输入 01_markdown/
+步骤 2  判断文本类型与形式化程度
+步骤 3  抽取 / 重构范畴骨架
+步骤 4  区分「原文显式」与「合理重构」
+步骤 5  不足则检索补足；仍不足 → 标记为「信息缺失」
+步骤 6  输出五件套；每张范畴论原图后追加通俗化翻译图
+步骤 7  从头迭代 N 次，只留轮次戳            ← 迭代不是打补丁
+步骤 8  跑交付门禁  scripts/check_reports.py --run-dir <运行目录>
+步骤 9  写 00_INDEX.md，交付
+```
 
 ### 4.1 第一步：判断文本类型与形式化程度
 
@@ -433,7 +433,7 @@ graph TD
 ## 13. 报告模板
 
 ```markdown
-# CTCS Report — Iteration {n}
+# CTSS Report — Iteration {n}
 
 - Timestamp: {YYYYMMDDTHHMMSSZ}
 - Source materials: materials/
@@ -479,13 +479,13 @@ graph TD
 
 ## 14. 使用指令
 
-当用户要求执行 CTCS 时：
+当用户要求执行 CTSS 时：
 
 1. 读取 `materials/`；
 2. 按第 4—8 节生成第 1 轮报告；
-3. 写入 `reports/CTCS_<timestamp>_iter1.md`；
-4. 从头重新执行，生成第 2 轮报告，写入 `reports/CTCS_<timestamp>_iter2.md`；
-5. 从头重新执行，生成第 3 轮报告，写入 `reports/CTCS_<timestamp>_iter3.md`；
+3. 写入 `reports/CTSS_<timestamp>_iter1.md`；
+4. 从头重新执行，生成第 2 轮报告，写入 `reports/CTSS_<timestamp>_iter2.md`；
+5. 从头重新执行，生成第 3 轮报告，写入 `reports/CTSS_<timestamp>_iter3.md`；
 6. 最终回复中给出三轮报告路径、核心对象/态射数量、主要信息缺失项，以及供 Value 模块使用的接口说明。
 
 ---
@@ -510,7 +510,7 @@ graph TD
 
 ## 16. 最小成功标准
 
-一次 CTCS 执行成功，当且仅当：
+一次 CTSS 执行成功，当且仅当：
 
 - `reports/` 中存在三轮带时间戳报告；
 - 每轮都有对象表、态射表、交换图、3—5 句范畴论重述、非范畴论通俗摘要；

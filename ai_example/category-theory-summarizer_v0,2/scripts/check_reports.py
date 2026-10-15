@@ -19,6 +19,8 @@ check_reports.py —— 报告交付门禁（范畴论总结技能 · 交付前�
   3. 代码围栏配对
   4. 交换图章节：每张原图之后必须追加通俗化翻译图
   5. 原图的 Mermaid 节点/箭头标签必须见于骨架表
+     （合法来源：基范畴 / 函子 / 对象表 / 态射表 / 极限与余极限 / 伴随 /
+       自然变换 / 单子与代数；取这些表中不含中文的单元格）
   6. 范畴论重述 3–5 句
   7. 表格数据行 ≥6
   8. 显式性/置信度标注 ≥4
@@ -59,6 +61,24 @@ MARK_RE = re.compile(r"【(原文)?(显式|半显式|重构)】|显式性|置信
 DIAGRAM_HEAD_KEYWORDS = ("交换图", "Diagram", "diagram", "复合链")
 OBJ_HEAD_KEYWORDS = ("对象表", "Ob(")
 MOR_HEAD_KEYWORDS = ("态射表", "Hom(")
+
+# 节点命名的合法词表来源：全部**骨架表**的章节。
+# 曾经只查对象表与态射表，于是画伴随图（F ⊣ G）、单子图（T / η / μ / α）
+# 会被判成「自造节点名」——这是假阳性。骨架不止对象和态射两张表。
+SKELETON_SECTIONS = (
+    ("基范畴", ("基范畴", "Base")),
+    ("函子", ("函子", "Functor")),
+    ("对象表", OBJ_HEAD_KEYWORDS),
+    ("态射表", MOR_HEAD_KEYWORDS),
+    ("极限与余极限", ("极限",)),
+    ("伴随", ("伴随",)),
+    ("自然变换", ("自然变换",)),
+    ("单子与代数", ("单子", "代数")),
+)
+
+# 含 CJK 的单元格一律不作节点名（见 skeleton_tokens 的说明）。
+# 用码点区间而非字面字符，避免编辑器/编码把区间写坏。
+CJK_RE = re.compile(r"[\u2e80-\u9fff\u3040-\u30ff\uff00-\uffef]")
 
 # Mermaid 里形如 A["Θ"] 的节点标签、以及 -->|"m"| 的箭头标签
 MERMAID_NODE_RE = re.compile(r"\[\s*\"?([^\"\]\[]+?)\"?\s*\]")
@@ -138,22 +158,45 @@ def norm(tok):
 
 
 def skeleton_tokens(lines):
-    """从对象表 / 态射表抽取可作为节点名的记号集合。
+    """抽取可作为节点名的记号集合，返回 (记号集合, 已扫描的骨架表清单)。
 
-    只取**第一列**（对象表的记号列、态射表的符号列）。第二列是中文名，
-    若一并纳入词表，翻译图用「参数空间」这类中文名会被误判为「未翻译」。
-    行表格式约定见 references/report-template.md：第一列必须是可用于
-    Mermaid 节点命名的记号。
+    合法命名来源 = **全部骨架表**，不只是对象表与态射表：
+    基范畴、函子、对象、态射、极限与余极限、伴随、自然变换、单子与代数。
+    只认对象表与态射表时，画伴随图（F ⊣ G）或单子图（T / η / μ / α）
+    会被判成自造节点名——那是检查器在说谎，不是报告写错了。
+
+    取词规则（**一条**，可复算，不靠 AI 推断）：
+
+        骨架表里**不含中文的单元格**即可作为节点名。
+
+    为什么不是「只取第一列」：
+      - 记账号不总在第一列。实盘表常写成「材料的说法 | 范畴结构 |」，
+        记号 `A×B` 在第二列；基范畴表常写成「层 | 范畴 |」，`Kl(P)` 也在第二列。
+        固定取第一列会漏掉它们（假阳性）。
+      - 反过来，无条件纳入第一列更糟：第一列是中文名时（极限表常见），
+        中文名会进词表，翻译图用「参数空间」之类就会被判成「未翻译」——
+        这个假阳性历史上真实发生过。
+      - 模板规范下记号本就不含中文，所以「不含中文」这一条**覆盖了**第一列写法：
+        一条规则同时兼顾两种表形，且不引入中文名污染。
+
+    模板仍**建议**把记号放第一列（便于阅读），但这不是门禁的判定依据。
     """
     toks = set()
+    scanned = []
     for _lv, title, s, e in split_sections(lines):
-        if any(k in title for k in OBJ_HEAD_KEYWORDS + MOR_HEAD_KEYWORDS):
-            for row in table_data_rows(lines, s, e):
-                if row:
-                    t = norm(row[0])
-                    if t:
+        for label, keys in SKELETON_SECTIONS:
+            if not any(k in title for k in keys):
+                continue
+            rows = table_data_rows(lines, s, e)
+            if rows:
+                scanned.append("%s（%d 行）" % (label, len(rows)))
+            for row in rows:
+                for cell in row:
+                    t = norm(cell)
+                    if t and not CJK_RE.search(t):
                         toks.add(t)
-    return toks
+            break
+    return toks, scanned
 
 
 def mermaid_labels(lines, block):
@@ -219,13 +262,20 @@ def check_diagrams(lines):
     problems = []
     secs = split_sections(lines)
     blocks = mermaid_blocks(lines)
-    toks = skeleton_tokens(lines)
+    toks, scanned = skeleton_tokens(lines)
     diag_secs = [(lv, t, s, e) for lv, t, s, e in secs
                  if any(k in t for k in DIAGRAM_HEAD_KEYWORDS)]
 
     if not diag_secs:
         return ["缺少交换图章节：需有独立的交换图章节，"
                 "内含 ≥1 组 Mermaid 的「原图 + 通俗化翻译图」"], {"sections": 0}
+
+    # 词表为空时「节点命名以骨架表为准」根本无从校验，必须报错。
+    # 静默放行等于把这条要求作废——历史上第 4、7 处假阴性都是这个形态。
+    if not toks and any(classify_block(lines, b)[0] == "orig" for b in blocks):
+        problems.append("骨架表里没有可用于节点命名的记号，无法校验原图节点命名："
+                        "基范畴 / 对象表 / 态射表 / 极限与余极限 / 伴随 / 自然变换 / "
+                        "单子与代数各表须给出不含中文的记号（建议放第一列）")
 
     n_orig = n_trans = 0
     for _lv, title, s, e in diag_secs:
@@ -272,11 +322,16 @@ def check_diagrams(lines):
                                     "节点须写成 A[\"名称\"]、箭头写成 -->|\"名称\"| 的形式"
                                     % (title, idx + 1))
                     continue
-                unknown = sorted(t for t in labels if t not in toks)
+                # 词表为空时上面已经报过「无法校验」，这里不再逐标签重复报，
+                # 否则同一根因冒出两条，让人以为是两处缺陷。
+                unknown = sorted(t for t in labels if t not in toks) if toks else []
                 if unknown:
-                    problems.append("「%s」第 %d 张原图的节点/箭头名未见于骨架表：%s。"
-                                    "Mermaid 节点命名必须与对象表/态射表第一列一致"
-                                    % (title, idx + 1, "、".join(unknown[:8])))
+                    problems.append(
+                        "「%s」第 %d 张原图的节点/箭头名未见于骨架表：%s。"
+                        "已查骨架表：%s。节点名必须是这些表里出现过的、"
+                        "不含中文的记号（建议把记号放在第一列）"
+                        % (title, idx + 1, "、".join(unknown[:8]),
+                           "、".join(scanned) if scanned else "（未找到任何骨架表）"))
             if kind == "trans" and idx > 0 and seq[idx - 1] == "orig":
                 prev_nodes, prev_edges = mermaid_labels(lines, sec_blocks[idx - 1])
                 prev = prev_nodes | prev_edges
