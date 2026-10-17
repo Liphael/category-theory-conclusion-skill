@@ -1,0 +1,43 @@
+﻿编号,状态,文件,来源URL,标题
+ref06000001,已下载,ref06000001_240507987_ThePlatonicRepresentationHypothesis.pdf,https://arxiv.org/abs/2405.07987,The Platonic Representation Hypothesis
+ref06000002,已下载,ref06000002_251203750_UniversallyConvergingRepresentationsofMatterAcro.pdf,https://arxiv.org/abs/2512.03750,Universally Converging Representations of Matter Across Scientific Foundation Models
+ref06000003,已下载,ref06000003_221000482_CompositionalGeneralizationinUnsupervisedComposi.pdf,https://arxiv.org/abs/2210.00482,Compositional Generalization in Unsupervised Compositional Representation Learning
+ref06000004,已下载,ref06000004_230518063_VectorbasedRepresentationistheKeyAStudyonDisenta.pdf,https://arxiv.org/abs/2305.18063,Vector-based Representation is the Key
+ref06000005,已下载,ref06000005_200704612_ConceptBottleneckModels.pdf,https://arxiv.org/abs/2007.04612,Concept Bottleneck Models
+ref06000006,已下载,ref06000006_171111279_InterpretabilityBeyondFeatureAttributionQuantita.pdf,https://arxiv.org/abs/1711.11279,TCAV: Interpretability Beyond Feature Attribution
+ref06000007,已下载,ref06000007_190203129_TowardsAutomaticConceptbasedExplanations.pdf,https://arxiv.org/abs/1902.03129,Towards Automatic Concept-based Explanations (ACE)
+ref06000008,已下载,ref06000008_220515480_PosthocConceptBottleneckModels.pdf,https://arxiv.org/abs/2205.15480,Post-hoc Concept Bottleneck Models
+ref06000009,已下载,ref06000009_220909056_ConceptEmbeddingModelsBeyondtheAccuracyExplainab.pdf,https://arxiv.org/abs/2209.09056,Concept Embedding Models
+ref06000010,已下载,ref06000010_210504289_DoConceptBottleneckModelsLearnasIntended.pdf,https://arxiv.org/abs/2105.04289,Do Concept Bottleneck Models Learn as Intended?
+ref06000011,网页版,ref06000011_ToyModelsOfSuperposition_网页版.html,https://transformer-circuits.pub/2022/toy_model/index.html,Toy Models of Superposition
+ref06000012,网页版,ref06000012_TowardsMonosemanticity_网页版.html,https://transformer-circuits.pub/2023/monosemantic-features/index.html,Towards Monosemanticity
+ref06000013,已下载,ref06000013_230908600_SparseAutoencodersFindHighlyInterpretableFeature.pdf,https://arxiv.org/abs/2309.08600,Sparse Autoencoders Find Highly Interpretable Features in Language Models
+ref06000014,网页版,ref06000014_ScalingMonosemanticity_网页版.html,https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html,Scaling Monosemanticity
+ref06000015,已下载,ref06000015_251210805_InterpretableandSteerableConceptBottleneckSparse.pdf,https://arxiv.org/abs/2512.10805,CB-SAE: Interpretable and Steerable Concept Bottleneck Sparse Autoencoders
+ref06000016a,已下载,ref06000016a_251202004_AlignSAEConceptAlignedSparseAutoencoders.pdf,https://arxiv.org/abs/2512.02004,AlignSAE: Concept-Aligned Sparse Autoencoders
+ref06000016b,已下载,ref06000016b_251207355_AGeometricUnificationofConceptLearningwithConcep.pdf,https://arxiv.org/abs/2512.07355,A Geometric Unification of Concept Learning with Concept Cones
+ref06000017,未获取-付费墙,,https://doi.org/10.1016/j.neucom.2025.131269,"Context-dependent neuro-symbolic AI (Neurocomputing 654, 2025)"
+ref06000018,已下载,ref06000018_221015889_NeuroSymbolicComputingSurvey.pdf,https://arxiv.org/abs/2210.15889,Towards Data-and Knowledge-Driven AI: A Survey on Neuro-Symbolic Computing
+ref06000019,未获取-反爬,,https://www.cell.com/patterns/fulltext/S2666-3899(23)00106-X,"Methods for identifying emergent concepts in deep neural networks (Patterns 4, 2023)"
+ref06000020,已下载,ref06000020_201002855_CURIABenchmarkforProductiveConceptLearningUnderU.pdf,https://arxiv.org/abs/2010.02855,CURI: A Benchmark for Productive Concept Learning Under Uncertainty
+ref06000021,已下载,ref06000021_220204753_DiscoveringConceptsinLearnedRepresentationsusing.pdf,https://arxiv.org/abs/2202.04753,Discovering Concepts in Learned Representations using Statistical Inference
+ref07000001,已下载,ref07000001_11021889_Ologsacategoricalframeworkforknowledgerepresenta.pdf,https://arxiv.org/abs/1102.1889,Ologs: A Categorical Framework for Knowledge Representation
+ref07000002,未获取-专著章节,,,"Lawvere, Tools for the Advancement of Objective Logic (1994)"
+ref07000003,未获取-专著,,,"Mac Lane & Moerdijk, Sheaves in Geometry and Logic (1992)"
+ref07000004,未获取-专著,,,"Johnstone, Sketches of an Elephant (2002)"
+ref07000005,已下载,ref07000005_CaramelloLafforgue_OntologiesAndToposes.pdf,https://www.oliviacaramello.com/Talks/OntologiesAndToposes.pdf,"Ontologies, knowledge representations and Grothendieck toposes (slides)"
+ref07000006,已下载,ref07000006_260218033_OntheCategoryTheoreticIndependenceofMeaningObjec.pdf,https://arxiv.org/abs/2602.18033,"On the Category-Theoretic Independence of Meaning, Object, Name and Existence"
+ref07000007,已下载,ref07000007_260217160_GrothendiecksGeometricUniversesandASheafTheoreti.pdf,https://arxiv.org/abs/2602.17160,Grothendieck's Geometric Universes and a Sheaf-Theoretic Foundation of Information Network
+ref07000008,未获取-付费墙(有替代件),ref07000008_补充_GoguenBurstall1986_Institutions_Foundations.pdf,https://doi.org/10.1145/147508.147524,Institutions: Abstract model theory for specification and programming (JACM 1992)
+ref07000009,已下载,ref07000009_181008074_TheInstitutionalApproach.pdf,https://arxiv.org/abs/1810.08074,The Institutional Approach
+ref07000010,已下载,ref07000010_10091166_FunctorialDataMigration.pdf,https://arxiv.org/abs/1009.1166,Functorial Data Migration
+ref07000011,已下载,ref07000011_12125303_RelationalFoundationsForFunctorialDataMigration.pdf,https://arxiv.org/abs/1212.5303,Relational Foundations for Functorial Data Migration
+ref07000012,已下载,ref07000012_150303571_AlgebraicDataIntegration.pdf,https://arxiv.org/abs/1503.03571,Algebraic Data Integration
+ref07000013,已下载,ref07000013_170600526_KnowledgeRepresentationinBicategoriesofRelations.pdf,https://arxiv.org/abs/1706.00526,Knowledge Representation in Bicategories of Relations
+ref07000014,已下载,ref07000014_240319884_RepresentingKnowledgeandQueryingDatausingDoubleF.pdf,https://arxiv.org/abs/2403.19884,Representing Knowledge and Querying Data using Double-Functorial Semantics
+ref07000015,已下载,ref07000015_160301446_Sheavesarethecanonicaldatastructureforsensorinte.pdf,https://arxiv.org/abs/1603.01446,Sheaves are the canonical datastructure for sensor integration
+ref07000016,已下载,ref07000016_JoslynEtAl_TopologicalFrameworkSemanticSources.pdf,https://ceur-ws.org/Vol-1304/STIDS2014_P2_JoslynEtAl.pdf,Towards A Topological Framework for Integrating Semantic Information Sources
+ref07000017,已下载,ref07000017_260305685_FromLineKnowledgeDigraphstoSheafSemanticsACatego.pdf,https://arxiv.org/abs/2603.05685,From Line Knowledge Digraphs to Sheaf Semantics
+ref07000018,未获取-待核实,,,"Rossiter, Whitehead's Category of the Ultimate as Lawvere's Topos (2023)"
+ref07000019,网页版,ref07000019_nLab.html,https://ncatlab.org/nlab/show/ontology+log,nLab: ontology log
+ref07000020,已下载,ref07000020_Myers_CategoricalSystemsTheory.pdf,https://www.davidjaz.com/Papers/DynamicalBook.pdf,"Categorical Systems Theory (Myers, draft 2023)"
